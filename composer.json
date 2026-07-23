@@ -30,7 +30,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Yew\\Plugins": "src/Plugins"
+      "Yew\\Cloud\\Plugins": "src/Plugins"
     },
     "files": [
     ]
