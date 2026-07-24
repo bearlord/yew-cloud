@@ -6,14 +6,9 @@
 
 namespace Yew\Cloud\Plugins\Gateway\Filter;
 
-use ESD\Core\Order\Order;
-use ESD\Plugins\Pack\ClientData;
+use Yew\Core\Order\Order;
+use Yew\Plugins\Pack\ClientData;
 
-/**
- * Filter Middleware
- * Class AbstractFilter
- * @package ESD\Plugins\EasyRoute\Filter
- */
 abstract class AbstractFilter extends Order
 {
     const FILTER_PRE = "filter_pre";

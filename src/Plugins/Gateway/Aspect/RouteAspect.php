@@ -1,38 +1,34 @@
 <?php
 /**
- * ESD framework
- * @author tmtbe <896369042@qq.com>
+ * Yew framework
  * @author bearlord <565364226@qq.com>
  */
 
 namespace Yew\Cloud\Plugins\Gateway\Aspect;
 
-use ESD\Core\Exception;
-use ESD\Core\Plugins\Logger\GetLogger;
-use ESD\Plugins\Cloud\Gateway\Controller\IController;
-use ESD\Plugins\Cloud\Gateway\Filter\AbstractFilter;
-use ESD\Plugins\Cloud\Gateway\Filter\FilterManager;
-use ESD\Plugins\Cloud\Gateway\GatewayConfig;
-use ESD\Plugins\Cloud\Gateway\GatewayPlugin;
-use ESD\Plugins\Cloud\Gateway\RouteConfig;
-use ESD\Plugins\Cloud\Gateway\RouteException;
-use ESD\Server\Coroutine\Server;
-use ESD\Plugins\Aop\OrderAspect;
-use ESD\Plugins\Pack\Aspect\PackAspect;
-use ESD\Plugins\Pack\ClientData;
-use ESD\Plugins\Pack\GetBoostSend;
-use ESD\Nikic\FastRoute\Dispatcher;
-use ESD\Goaop\Aop\Intercept\MethodInvocation;
-use ESD\Goaop\Lang\Annotation\Around;
-use ESD\Goaop\Lang\Annotation\After;
-use ESD\Goaop\Lang\Annotation\Before;
+use Yew\Core\Exception;
+use Yew\Core\Plugins\Logger\GetLogger;
+use Yew\Plugins\Cloud\Gateway\Filter\AbstractFilter;
+use Yew\Plugins\Cloud\Gateway\Filter\FilterManager;
+use Yew\Plugins\Cloud\Gateway\GatewayConfig;
+use Yew\Plugins\Cloud\Gateway\GatewayPlugin;
+use Yew\Plugins\Cloud\Gateway\RouteConfig;
+use Yew\Plugins\Cloud\Gateway\RouteException;
+use Yew\Plugins\Route\Controller\IController;
+use Yew\Server\Coroutine\Server;
+use Yew\Plugins\Aop\OrderAspect;
+use Yew\Plugins\Pack\Aspect\PackAspect;
+use Yew\Plugins\Pack\ClientData;
+use Yew\Plugins\Pack\GetBoostSend;
+use Yew\Nikic\FastRoute\Dispatcher;
+use Yew\Goaop\Aop\Intercept\MethodInvocation;
+use Yew\Goaop\Lang\Annotation\Around;
+use Yew\Goaop\Lang\Annotation\After;
+use Yew\Goaop\Lang\Annotation\Before;
 use Swlib\Saber;
 use Swoole\Coroutine\Channel;
 
-/**
- * Class RouteAspect
- * @package ESD\Plugins\Cloud\Gateway\Aspect
- */
+
 class RouteAspect extends OrderAspect
 {
     use GetLogger;
@@ -91,6 +87,33 @@ class RouteAspect extends OrderAspect
     public function getName(): string
     {
         return "RouteAspect";
+    }
+
+
+    /**
+     * Get controller
+     *
+     * @param $controllerName
+     * @return IController
+     * @throws RouteException
+     */
+    private function getController($controllerName)
+    {
+        if (!isset($this->controllers[$controllerName])) {
+            if (class_exists($controllerName)) {
+                $controller = DIget($controllerName);
+                if ($controller instanceof IController) {
+                    $this->controllers[$controllerName] = $controller;
+                    return $controller;
+                } else {
+                    throw new RouteException(sprintf("Class %s should extend IController", $controllerName));
+                }
+            } else {
+                throw new RouteException(sprintf("%s Not found", $controllerName));
+            }
+        } else {
+            return $this->controllers[$controllerName];
+        }
     }
 
     /**
@@ -153,31 +176,6 @@ class RouteAspect extends OrderAspect
         return;
     }
 
-    /**
-     * Get controller
-     *
-     * @param $controllerName
-     * @return IController
-     * @throws RouteException
-     */
-    private function getController($controllerName)
-    {
-        if (!isset($this->controllers[$controllerName])) {
-            if (class_exists($controllerName)) {
-                $controller = DIget($controllerName);
-                if ($controller instanceof IController) {
-                    $this->controllers[$controllerName] = $controller;
-                    return $controller;
-                } else {
-                    throw new RouteException(sprintf("Class %s should extend IController", $controllerName));
-                }
-            } else {
-                throw new RouteException(sprintf("%s Not found", $controllerName));
-            }
-        } else {
-            return $this->controllers[$controllerName];
-        }
-    }
 
     /**
      * After onTcpConnect

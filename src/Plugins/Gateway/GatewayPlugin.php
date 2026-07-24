@@ -26,7 +26,6 @@ use Yew\Plugins\Pack\ClientDataProxy;
 use Yew\Plugins\Pack\PackPlugin;
 use Yew\Plugins\Validate\ValidatePlugin;
 use Yew\Server\Coroutine\Server;
-use Yew\Yii\Yii;
 use Yew\Nikic\FastRoute\Dispatcher;
 use Yew\Nikic\FastRoute\RouteCollector;
 use ReflectionClass;
@@ -253,10 +252,7 @@ class GatewayPlugin extends AbstractPlugin
             $port = Server::$instance->getPortManager()->getPortConfigs()[$portName]->getPort();
             if (Server::$instance->getProcessManager()->getCurrentProcess()->getProcessId() == 0) {
                 $message = sprintf("{Mapping} %s:%-7s %s {onto} %s::%s", $port, $type, $routeRole->getRoute(), $reflectionClass->name, $reflectionMethod->name);
-                $message = Yii::t('esd', $message, [
-                    'Mapping' => Yii::t('esd', 'Mapping'),
-                    'onto' => Yii::t('esd', 'onto'),
-                ]);
+
                 Server::$instance->getLog()->info($message);
             }
             $r->addRoute("$port:{$type}", $routeRole->getRoute(), [$reflectionClass, $reflectionMethod]);

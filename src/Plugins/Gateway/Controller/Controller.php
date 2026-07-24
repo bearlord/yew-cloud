@@ -9,31 +9,6 @@ namespace Yew\Cloud\Plugins\Gateway\Controller;
 class Controller extends \Yew\Framework\Controller
 {
     /**
-     * @param string $title
-     * @param string $info
-     * @param int $wait
-     * @param string $url
-     * @return string
-     */
-    private function msg(string $title = 'System Message', string $info = '', int $wait = 3, string $url = '/'): string
-    {
-        return sprintf(
-            '<!DOCTYPE html>
-        <html>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-            <meta http-equiv="Refresh" content="%d; url=%s"/>
-        </head>
-        <body>
-            <h1>%s</h1>
-            <h2>%s</h2>
-        </body>
-        </html>',
-            $wait, $url, $title, $info
-        );
-    }
-
-    /**
      * @param $data
      * @param null $url
      * @param int $wait

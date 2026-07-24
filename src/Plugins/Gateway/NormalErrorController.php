@@ -1,18 +1,14 @@
 <?php
 /**
- * ESD framework
- * @author tmtbe <896369042@qq.com>
+ * Yew framework
+ * @author bearlord <565364226@qq.com>
  */
 
 namespace Yew\Cloud\Plugins\Gateway;
 
-use ESD\Plugins\EasyRoute\Controller\EasyController;
+use Yew\Framework\Controller;
 
-/**
- * Class NormalErrorController
- * @package ESD\Plugins\EasyRoute
- */
-class NormalErrorController extends EasyController
+class NormalErrorController extends Controller
 {
 
     /**
